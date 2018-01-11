@@ -21,8 +21,6 @@ class Rounds{
         var d : Long = D
 
         for (k in 0 until (message.size / 16)) {
-            println()
-            println("For the 512bits message number $k :")
             val M = LongArray(16, { j -> message[k * 16 + j] })
 
             for (i in 0..63) {
@@ -39,11 +37,6 @@ class Rounds{
                 c = b
                 b = (b + shift(tmpB, Tables.lshift[i])) % maxVal
 
-                println("Round ${i+1}:")
-                //println("A = $a")
-                println("B = $b")
-                //println("C = $c")
-                //println("D = $d")
             }
 
             A = (A + a) % maxVal
@@ -51,12 +44,6 @@ class Rounds{
             C = (C + c) % maxVal
             D = (D + d) % maxVal
         }
-        println("Fin, on obtient:")
-        println("A = $A")
-        println("B = $B")
-        println("C = $C")
-        println("D = $D")
-
         return longsToBytesArray(A,B,C,D)
     }
 
