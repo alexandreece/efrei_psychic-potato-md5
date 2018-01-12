@@ -1,38 +1,33 @@
-fun main(args : Array<String>){
-   //Message
-   val msg = "Hello World!"
-   println("Message :")
-   println(msg)
+fun main(args: Array<String>) {
+    //Message
+    val msg = "Hello World!"
+    println("Message :")
+    println(msg)
 
-   val hash = MD5(msg)
-   println("Hash MD5 : ")
-   println(hash)
+    val hash = MD5(msg)
+    println("Hash MD5 : ")
+    println(hash)
 }
 
-fun MD5(msg : String): String {
-   val init = Initializer()
-   // Array M composed of 32bits words
-   val tableMsg = init.bytesTo32bitsArray(init.appendMessage(msg))
+fun MD5(msg: String): String {
+    val init = Initializer()
+    // Array M composed of 32bits words
+    val tableMsg = init.bytesTo32bitsArray(init.appendMessage(msg))
 
-   val rds = Rounds()
-   val hash = rds.encrypt(tableMsg)
+    val rds = Rounds()
+    val hash = rds.encrypt(tableMsg)
 
-   return toString(hash)
+    return toString(hash)
 
 }
 
-fun toString(arr : IntArray): String{
-   var str = ""
-   for(i in arr.indices){
-      var num = arr[i]
-      val hex = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
-      str += hex[num / 16]
-      str += hex[num % 16]
-   }
-   return str
+fun toString(arr: IntArray): String {
+    var str = ""
+    for (i in arr.indices) {
+        var num = arr[i]
+        val hex = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
+        str += hex[num / 16]
+        str += hex[num % 16]
+    }
+    return str
 }
-
-
-
-
-
