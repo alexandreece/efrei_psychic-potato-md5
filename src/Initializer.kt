@@ -30,20 +30,5 @@ class Initializer {
     }
 
 
-    fun bytesTo32bitsArray(appendMsg: IntArray): LongArray {
-        val result = LongArray(appendMsg.size / 4)
-        var sum: Long = 0
-        var pow = 1
-        for (i in appendMsg.indices) {
-            sum += appendMsg[i].toLong() * pow
-            pow *= 256
-            if (i % 4 == 3) {
-                result[i / 4] = sum
-                sum = 0
-                pow = 1
-            }
-        }
 
-        return result
-    }
 }

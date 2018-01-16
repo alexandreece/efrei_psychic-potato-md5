@@ -12,5 +12,7 @@ class Tables {
         )
 
         val K = LongArray(64, { i -> ((abs(sin(i.toDouble() + 1)) * 4294967296) % 2.0.pow(32)).toLong() })
+
+        val hex = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
     }
 }

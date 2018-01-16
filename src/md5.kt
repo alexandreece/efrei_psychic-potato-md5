@@ -1,22 +1,20 @@
 fun MD5(msg: String): String {
     val init = Initializer()
+
     // Array M composed of 32bits words
-    val tableMsg = init.bytesTo32bitsArray(init.appendMessage(msg))
+    val tableMsg = bytesTo32bitsArray(init.appendMessage(msg))
 
-    val rds = Rounds()
-    val hash = rds.encrypt(tableMsg)
-
-    return toString(hash)
+    return compute(tableMsg)
 
 }
 
-fun toString(arr: IntArray): String {
-    var str = ""
-    for (i in arr.indices) {
-        var num = arr[i]
-        val hex = arrayOf("0", "1", "2", "3", "4", "5", "6", "7", "8", "9", "A", "B", "C", "D", "E", "F")
-        str += hex[num / 16]
-        str += hex[num % 16]
-    }
-    return str
+fun compute(msg : LongArray): String {
+    val hash = Rounds().encrypt(msg)
+    return bytesToHexa(hash)
 }
+
+fun MD5hexa(msgHexa : String): String{
+    val msg = LongArray(msgHexa.length / 8, {i -> hexaToLong(msgHexa.substring(i * 8, (i + 1) * 8))})
+    return compute(msg)
+}
+
