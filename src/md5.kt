@@ -1,20 +1,32 @@
-fun MD5(msg: String): String {
+
+
+fun MD5(msg: String?): String {
+    if(msg.isNullOrEmpty()) {
+        return throw IllegalArgumentException()
+    }
+
+    val byteMsg = stringToBytes(msg!!)
+
+    val byteHash = MD5(byteMsg)
+    val hash = byteArrayToString(byteHash)
+    return hash
+}
+
+
+fun compute(msg : LongArray): ByteArray {
+    return Rounds().encrypt(msg)
+}
+
+fun MD5(msg : ByteArray): ByteArray {
+    //init handle msg formatting
     val init = Initializer()
+    val readyMsg = init.appendMessage(msg)
 
     // Array M composed of 32bits words
-    val tableMsg = bytesTo32bitsArray(init.appendMessage(msg))
+    val tableMsg = bytesTo32bitsArray(readyMsg)
 
-    return compute(tableMsg)
+    val byteHash = compute(tableMsg)
+    return byteHash
 
-}
-
-fun compute(msg : LongArray): String {
-    val hash = Rounds().encrypt(msg)
-    return bytesToHexa(hash)
-}
-
-fun MD5hexa(msgHexa : String): String{
-    val msg = LongArray(msgHexa.length / 8, {i -> hexaToLong(msgHexa.substring(i * 8, (i + 1) * 8))})
-    return compute(msg)
 }
 

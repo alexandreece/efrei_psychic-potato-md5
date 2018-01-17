@@ -8,7 +8,7 @@ class Rounds {
 
     val maxVal: Long = (2.0.pow(32)).toLong()
 
-    fun encrypt(message: LongArray): IntArray {
+    fun encrypt(message: LongArray): ByteArray {
 
 
         var tmpB: Long
@@ -42,7 +42,8 @@ class Rounds {
             C = (C + c) % maxVal
             D = (D + d) % maxVal
         }
-        return longsToBytesArray(A, B, C, D)
+        val byteHash = longsToBytesArray(longArrayOf(A, B, C, D))
+        return byteHash
     }
 
     private fun shift(n: Long, s: Int): Long {
@@ -56,19 +57,6 @@ class Rounds {
         return result
     }
 
-    private fun longsToBytesArray(a: Long, b: Long, c: Long, d: Long): IntArray {
-        val entry = longArrayOf(a, b, c, d)
-        val result = IntArray(16)
-
-        for (i in 0..3) {
-            var N = entry[i]
-            for (j in 0..3) {
-                result[i * 4 + j] = (N % 256).toInt()
-                N /= 256
-            }
-        }
-        return result
-    }
 
     fun F(b: Long, c: Long, d: Long): Long {
         return ((b and c) or (invPos(b) and d))
