@@ -30,7 +30,7 @@ fun hexaToLong(hexa : String): Long {
 
 //From to hexadecimal number of size 2, to byte
 fun hexaToByte(hexa : String): Byte {
-    return hexaToLong(hexa).toByte()
+    return ((Tables.hex.indexOf(hexa[0].toString().toUpperCase())) * 16 + (Tables.hex.indexOf(hexa[1].toString().toUpperCase()))).toByte()
 }
 
 fun stringToBytes(str : String): ByteArray {
@@ -59,8 +59,4 @@ fun byteArrayToString(arr: ByteArray): String {
         sb.append(Tables.hex[n / 16] + Tables.hex[n % 16])
     }
     return sb.toString()
-}
-
-fun display(arr : ByteArray){
-    println(byteArrayToString(arr))
 }
