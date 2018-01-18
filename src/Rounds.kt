@@ -1,39 +1,48 @@
 import kotlin.math.pow
 
-class Rounds {
+class Rounds(msg: LongArray, verbose : Boolean) {
+    val message = msg
+    val vb = verbose
+
     var A: Long = 0x67452301
     var B: Long = 0xefcdab89
     var C: Long = 0x98badcfe
     var D: Long = 0x10325476
 
+
+
     val maxVal: Long = (2.0.pow(32)).toLong()
 
-    fun encrypt(message: LongArray): ByteArray {
+    fun encrypt(): ByteArray {
 
 
         var tmpB: Long
 
-        var a: Long = A
-        var b: Long = B
-        var c: Long = C
-        var d: Long = D
+
 
         for (k in 0 until (message.size / 16)) {
+            //M represent a 512 bits message part
             val M = LongArray(16, { j -> message[k * 16 + j] })
+
+            //Saving A B C and D
+            var a: Long = A
+            var b: Long = B
+            var c: Long = C
+            var d: Long = D
 
             for (i in 0..63) {
 
                 tmpB = when {
-                    i < 16 -> (a + F(b, c, d) + M[i] + Tables.K[i]) % maxVal
-                    i < 32 -> (a + G(b, c, d) + M[(1 + i * 5) % 16] + Tables.K[i]) % maxVal
-                    i < 48 -> (a + H(b, c, d) + M[(5 + i * 3) % 16] + Tables.K[i]) % maxVal
-                    else -> (a + I(b, c, d) + M[(i * 7) % 16] + Tables.K[i]) % maxVal
+                    i < 16 -> (A + F(B, C, D) + M[i] + Tables.K[i]) % maxVal
+                    i < 32 -> (A + G(B, C, D) + M[(1 + i * 5) % 16] + Tables.K[i]) % maxVal
+                    i < 48 -> (A + H(B, C, D) + M[(5 + i * 3) % 16] + Tables.K[i]) % maxVal
+                    else -> (A + I(B, C, D) + M[(i * 7) % 16] + Tables.K[i]) % maxVal
                 }
 
-                a = d
-                d = c
-                c = b
-                b = (b + shift(tmpB, Tables.lshift[i])) % maxVal
+                A = D
+                D = C
+                C = B
+                B = (B + shift(tmpB, Tables.lshift[i])) % maxVal
 
             }
 

@@ -1,10 +1,10 @@
 //Array of bytes to array of 32 bits words
-fun bytesTo32bitsArray(appendMsg: IntArray): LongArray {
+fun bytesTo32bitsArray(appendMsg: ByteArray): LongArray {
     val result = LongArray(appendMsg.size / 4)
     var sum: Long = 0
     var pow = 1
     for (i in appendMsg.indices) {
-        sum += appendMsg[i].toLong() * pow
+        sum += ((appendMsg[i].toLong() + 256) % 256) * pow
         pow *= 256
         if (i % 4 == 3) {
             result[i / 4] = sum
@@ -55,8 +55,24 @@ fun byteArrayToString(arr: ByteArray): String {
     val sb = StringBuilder()
 
     for(b in arr){
-        val n = (b.toInt() + 256) % 256
-        sb.append(Tables.hex[n / 16] + Tables.hex[n % 16])
+        sb.append(intToString(b.toInt()))
     }
     return sb.toString()
 }
+//Return int represented by an hexadecimal string
+fun intToString(i : Int): String {
+    val n = (i + 256) % 256
+    return Tables.hex[n / 16] + Tables.hex[n % 16]
+}
+
+fun longToHexaString(lg : Long): String {
+    var result = ""
+    var tmp = lg
+    while(tmp > 0){
+        result = intToString(tmp.toInt() % 256) + result
+        tmp /= 256
+    }
+    return "0x" + result
+}
+
+

@@ -1,29 +1,23 @@
 fun main(args: Array<String>) {
+    testHMAC()
 
 
-//Message
+
+}
+fun testHMAC(){
+    //Message
     val msg = "what do ya want for nothing?"
     val key = "Jefe"
 
     val hmac = HMAC(msg, key, true)
 
-
-
 }
-
 fun testMD5(){
-
-    //Message
-    val msg = "Hello World!"
+    val msg = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
 
 
-    println("Message :")
-    println(msg)
-
-
-    val hash = MD5(msg)
-    println("Hash MD5 : ")
-    println(hash)
+    val hash = MD5(msg, true)
+    print(hash)
 }
 
 fun testhexaToByte() {
