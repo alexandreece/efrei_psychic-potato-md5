@@ -55,7 +55,6 @@ fun longToHexa8(l: Long): String {
     var result = ""
     var value = l
     for (i in 0..7) {
-        val a = value.toInt()
         result = Tables.hex[(value % 16).toInt()] + result
         value /= 16
     }

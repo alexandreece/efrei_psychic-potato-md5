@@ -1,9 +1,6 @@
 
 //MD5 with string of characters as argument
 fun MD5(msg: String?, verbose : Boolean = false): String {
-    if(msg.isNullOrEmpty()) {
-        return throw IllegalArgumentException()
-    }
     val byteMsg = stringToBytes(msg!!)
 
 
