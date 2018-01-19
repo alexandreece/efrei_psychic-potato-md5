@@ -1,30 +1,28 @@
 fun main(args: Array<String>) {
-    testHMAC()
+    //Message
+    val msg: String?
+    val key: String?
+    var verbose = false
+    var invalid = true
 
-
-
-}
-fun testHMAC(){
-    while (true) {
-
-        //Message
-        var msg: String?
-        var key: String?
-
-        println("Enter a message like \"Hello World!\" or nothing for default message : ")
-        msg = readLine()
-        println("Enter a key like \"Hello World!\" or \"0xA1210CC8E\" or nothing for default message : ")
-        key = readLine()
-
-        val hmac = HMAC(msg, key, true)
-
+    while (invalid) {
+        println("Would you like extended display of the HMAC algorithm? Enter \"yes\" or \"no\".")
+        val value = readLine()
+        if (!value.isNullOrEmpty()) {
+            if (value!!.trim().toUpperCase().equals("YES")) {
+                verbose = true
+            }
+            invalid = false
+        }
     }
 
-}
-fun testMD5(){
-    val msg = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789"
+    println("Enter a message like \"Hello World!\" or nothing for default message : ")
+    msg = readLine()
+    println("Enter a key like \"Hello World!\" or \"0xA1210CC8E\" or nothing for default message : ")
+    key = readLine()
 
+    val hmac = HMAC(msg, key, verbose)
 
-    val hash = MD5(msg, true)
-    print(hash)
+    println("\nHMAC hash : ")
+    println(hmac)
 }
