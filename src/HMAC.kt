@@ -1,29 +1,58 @@
 import kotlin.experimental.xor
 
 //HMAC for key of type string of characters
-fun HMAC(message : String, key : String, verbose : Boolean = false): String {
-    validateArgs(message, key)
-    var byteKey = ByteArray(key.length, {i -> key[i].toByte()})
-    //Reduce key if necessary
-    if(key.length > 64){
-        byteKey = MD5(byteKey)
+fun HMAC(message: String?, key: String?, verbose: Boolean = false): String {
+    val readyMsg: String
+    val readyKey: String
+    if (message.isNullOrEmpty()) {
+        readyMsg = "Hi There"
+    } else {
+        readyMsg = message!!
+    }
+    if (key.isNullOrEmpty()) {
+        readyKey = "0x0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b0b"
+    } else {
+        readyKey = key!!
     }
 
     if(verbose){
         println("Message : ")
-        println(message)
+        println(readyMsg)
         println("Key : ")
-        println(key)
+        println(readyKey)
     }
 
-    return HMAC(message, byteKey, verbose)
+    //Key to ByteArray
+    var byteKey = userInputToBytes(readyKey)
+    //Message to ByteArray
+    var byteMsg = userInputToBytes(readyMsg)
+    //Reduce key if necessary
+    if (byteKey.size > 64) {
+        byteKey = MD5(byteKey)
+    }
+
+
+    return HMAC(byteMsg, byteKey, verbose)
 }
 
-//HMAC for key of type ByteArray
-fun HMAC(message : String, key : ByteArray, verbose : Boolean = false): String {
+fun userInputToBytes(str: String): ByteArray {
+    val result: ByteArray
+
+    if (str.substring(0, 2).equals("0x")) {
+        val hexaStr = str.substring(2)
+        result = hexaStrToByteArray(hexaStr)
+    } else {
+        result = stringToBytes(str)
+    }
+
+    return result
+}
+
+
+//HMAC for arguments of type ByteArray
+fun HMAC(message: ByteArray, key: ByteArray, verbose: Boolean = false): String {
 
     //Déclaring computing variables
-    val byteMsg = ByteArray(message.length, {i -> message[i].toByte()})
     val padKey = padKey(key)
     val ipad = ByteArray(padKey.size, {0x36.toByte()})
     val opad = ByteArray(padKey.size, {0x5c.toByte()})
@@ -35,7 +64,7 @@ fun HMAC(message : String, key : ByteArray, verbose : Boolean = false): String {
 
 
     //First hashing
-    val toHash = concatenate(kipad, byteMsg)
+    val toHash = concatenate(kipad, message)
     val hash1 = MD5(toHash)
     //Converting hash to ByteArray
 
@@ -45,10 +74,10 @@ fun HMAC(message : String, key : ByteArray, verbose : Boolean = false): String {
     val strHmac = byteArrayToString(hmac)
 
     if(verbose) {
-        println("Key :")
+        println("Message ready : ")
+        println(byteArrayToString(message))
+        println("Key ready :")
         println(byteArrayToString(padKey))
-        println("Message : ")
-        println(byteArrayToString(byteMsg))
         println("K xor ipad :")
         println(byteArrayToString(kipad))
         println("Kipad concatenated with message : ")
@@ -64,13 +93,6 @@ fun HMAC(message : String, key : ByteArray, verbose : Boolean = false): String {
     }
 
     return strHmac
-}
-
-
-fun validateArgs(message : String, key : String){
-    if(message.isNullOrEmpty() || key.isNullOrEmpty()){
-        throw IllegalArgumentException()
-    }
 }
 
 fun concatenate(arr1 : ByteArray, arr2 : ByteArray): ByteArray {
