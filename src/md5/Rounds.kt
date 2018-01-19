@@ -1,25 +1,26 @@
 import kotlin.math.pow
 
 class Rounds {
-    var A: Long = 0x67452301
-    var B: Long = 0xefcdab89
-    var C: Long = 0x98badcfe
-    var D: Long = 0x10325476
 
     val maxVal: Long = (2.0.pow(32)).toLong()
 
     fun encrypt(message: LongArray): IntArray {
-
+        //Init var
+        var a: Long = 0x67452301
+        var b: Long = 0xefcdab89
+        var c: Long = 0x98badcfe
+        var d: Long = 0x10325476
 
         var tmpB: Long
 
-        var a: Long = A
-        var b: Long = B
-        var c: Long = C
-        var d: Long = D
-
         for (k in 0 until (message.size / 16)) {
             val M = LongArray(16, { j -> message[k * 16 + j] })
+
+            //saving vars
+            val A: Long = a
+            val B: Long = b
+            val C: Long = c
+            val D: Long = d
 
             for (i in 0..63) {
 
@@ -37,12 +38,12 @@ class Rounds {
 
             }
 
-            A = (A + a) % maxVal
-            B = (B + b) % maxVal
-            C = (C + c) % maxVal
-            D = (D + d) % maxVal
+            a = (A + a) % maxVal
+            b = (B + b) % maxVal
+            c = (C + c) % maxVal
+            d = (D + d) % maxVal
         }
-        return longsToBytesArray(A, B, C, D)
+        return longsToBytesArray(a, b, c, d)
     }
 
     private fun shift(n: Long, s: Int): Long {
