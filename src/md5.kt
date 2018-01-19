@@ -1,13 +1,9 @@
-
 //MD5 with string of characters as argument
-fun MD5(msg: String?, verbose : Boolean = false): String {
-    if(msg.isNullOrEmpty()) {
-        return throw IllegalArgumentException()
-    }
+fun MD5(msg: String?, verbose: Boolean = false): String {
 
     val byteMsg = stringToBytes(msg!!)
 
-    if(verbose){
+    if (verbose) {
         println("Message : ")
         println(msg)
 
@@ -20,7 +16,7 @@ fun MD5(msg: String?, verbose : Boolean = false): String {
 
 
 //MD5 with ByteArray as argument
-fun MD5(msg : ByteArray, verbose : Boolean = false): ByteArray {
+fun MD5(msg: ByteArray, verbose: Boolean = false): ByteArray {
     //init handle msg formatting
     val init = Initializer()
     val readyMsg = init.appendMessage(msg)

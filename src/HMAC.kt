@@ -15,7 +15,7 @@ fun HMAC(message: String?, key: String?, verbose: Boolean = false): String {
         readyKey = key!!
     }
 
-    if(verbose){
+    if (verbose) {
         println("Message : ")
         println(readyMsg)
         println("Key : ")
@@ -54,13 +54,13 @@ fun HMAC(message: ByteArray, key: ByteArray, verbose: Boolean = false): String {
 
     //Déclaring computing variables
     val padKey = padKey(key)
-    val ipad = ByteArray(padKey.size, {0x36.toByte()})
-    val opad = ByteArray(padKey.size, {0x5c.toByte()})
+    val ipad = ByteArray(padKey.size, { 0x36.toByte() })
+    val opad = ByteArray(padKey.size, { 0x5c.toByte() })
 
 
     //First step of computing
-    val kipad = ByteArray(padKey.size, {i -> padKey[i] xor ipad[i]})
-    val kopad = ByteArray(padKey.size, {i -> padKey[i] xor opad[i]})
+    val kipad = ByteArray(padKey.size, { i -> padKey[i] xor ipad[i] })
+    val kopad = ByteArray(padKey.size, { i -> padKey[i] xor opad[i] })
 
 
     //First hashing
@@ -73,7 +73,7 @@ fun HMAC(message: ByteArray, key: ByteArray, verbose: Boolean = false): String {
     val hmac = MD5(toHash2)
     val strHmac = byteArrayToString(hmac)
 
-    if(verbose) {
+    if (verbose) {
         println("Message ready : ")
         println(byteArrayToString(message))
         println("Key ready :")
@@ -95,7 +95,7 @@ fun HMAC(message: ByteArray, key: ByteArray, verbose: Boolean = false): String {
     return strHmac
 }
 
-fun concatenate(arr1 : ByteArray, arr2 : ByteArray): ByteArray {
+fun concatenate(arr1: ByteArray, arr2: ByteArray): ByteArray {
     val result = ByteArray(arr1.size + arr2.size)
 
     System.arraycopy(arr1, 0, result, 0, arr1.size)
@@ -104,13 +104,13 @@ fun concatenate(arr1 : ByteArray, arr2 : ByteArray): ByteArray {
     return result
 }
 
-fun padKey(arr : ByteArray): ByteArray {
+fun padKey(arr: ByteArray): ByteArray {
     val result = ByteArray(64)
     System.arraycopy(arr, 0, result, 0, arr.size)
     return result
 }
 
-fun hexaStrToByteArray(hexa : String): ByteArray{
+fun hexaStrToByteArray(hexa: String): ByteArray {
     val size = hexa.length
-    return ByteArray(size / 2, {i -> hexaToByte(hexa.substring(i * 2, i * 2 + 2))})
+    return ByteArray(size / 2, { i -> hexaToByte(hexa.substring(i * 2, i * 2 + 2)) })
 }

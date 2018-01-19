@@ -1,6 +1,6 @@
 import kotlin.math.pow
 
-class Rounds(msg: LongArray, verbose : Boolean) {
+class Rounds(msg: LongArray, verbose: Boolean) {
     val message = msg
     val vb = verbose
 
@@ -8,7 +8,6 @@ class Rounds(msg: LongArray, verbose : Boolean) {
     var B: Long = 0xefcdab89
     var C: Long = 0x98badcfe
     var D: Long = 0x10325476
-
 
 
     val maxVal: Long = (2.0.pow(32)).toLong()
