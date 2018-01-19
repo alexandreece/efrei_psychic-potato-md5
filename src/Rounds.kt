@@ -14,13 +14,23 @@ class Rounds(msg: LongArray, verbose : Boolean) {
     val maxVal: Long = (2.0.pow(32)).toLong()
 
     fun encrypt(): ByteArray {
+        if (vb) {
+            println("Rounds of encryption, 512bits by 512bits.")
+        }
 
-
+        //tmpB is the variable which is computed
         var tmpB: Long
 
-
-
         for (k in 0 until (message.size / 16)) {
+            if (vb) {
+                println("Round ${k + 1}, 64 steps : ")
+                println("At beginning : ")
+                println("A : ${longToHexa8(A)}")
+                println("B : ${longToHexa8(B)}")
+                println("C : ${longToHexa8(C)}")
+                println("D : ${longToHexa8(D)}\n")
+            }
+
             //M represent a 512 bits message part
             val M = LongArray(16, { j -> message[k * 16 + j] })
 
@@ -31,7 +41,6 @@ class Rounds(msg: LongArray, verbose : Boolean) {
             var d: Long = D
 
             for (i in 0..63) {
-
                 tmpB = when {
                     i < 16 -> (A + F(B, C, D) + M[i] + Tables.K[i]) % maxVal
                     i < 32 -> (A + G(B, C, D) + M[(1 + i * 5) % 16] + Tables.K[i]) % maxVal
@@ -43,13 +52,24 @@ class Rounds(msg: LongArray, verbose : Boolean) {
                 D = C
                 C = B
                 B = (B + shift(tmpB, Tables.lshift[i])) % maxVal
-
+                if (vb) {
+                    println("Value of B after step ${i + 1} computation : ")
+                    println("${longToHexa8(B)}\n")
+                }
             }
 
             A = (A + a) % maxVal
             B = (B + b) % maxVal
             C = (C + c) % maxVal
             D = (D + d) % maxVal
+
+            if (vb) {
+                println("End of round ${k + 1} : ")
+                println("A : ${longToHexa8(A)}")
+                println("B : ${longToHexa8(B)}")
+                println("C : ${longToHexa8(C)}")
+                println("D : ${longToHexa8(D)}\n")
+            }
         }
         val byteHash = longsToBytesArray(longArrayOf(A, B, C, D))
         return byteHash

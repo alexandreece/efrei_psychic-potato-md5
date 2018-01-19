@@ -16,27 +16,12 @@ fun bytesTo32bitsArray(appendMsg: ByteArray): LongArray {
     return result
 }
 
-
-//String of hexa numbers as a Long integer
-fun hexaToLong(hexa : String): Long {
-    var pow = 1
-    var result : Long = 0
-    for(i in hexa.indices){
-        result += Tables.hex.indexOf(hexa[i].toString().toUpperCase()) * pow
-        pow *= 16
-    }
-    return result
-}
-
-//From to hexadecimal number of size 2, to byte
-fun hexaToByte(hexa : String): Byte {
-    return ((Tables.hex.indexOf(hexa[0].toString().toUpperCase())) * 16 + (Tables.hex.indexOf(hexa[1].toString().toUpperCase()))).toByte()
-}
-
+//From String of chars to ByteArray
 fun stringToBytes(str : String): ByteArray {
     return ByteArray(str.length, {i -> str[i].toByte()})
 }
 
+//From table of 16 longs of 32bits to ByteArray
 fun longsToBytesArray(entry: LongArray): ByteArray {
     val result = ByteArray(16)
 
@@ -50,7 +35,7 @@ fun longsToBytesArray(entry: LongArray): ByteArray {
     return result
 }
 
-
+//From ByteArray to hexadecimal string
 fun byteArrayToString(arr: ByteArray): String {
     val sb = StringBuilder()
 
@@ -65,14 +50,14 @@ fun intToString(i : Int): String {
     return Tables.hex[n / 16] + Tables.hex[n % 16]
 }
 
-fun longToHexaString(lg : Long): String {
+//From long to string to be displayed on 8 hexadecimal figures
+fun longToHexa8(l: Long): String {
     var result = ""
-    var tmp = lg
-    while(tmp > 0){
-        result = intToString(tmp.toInt() % 256) + result
-        tmp /= 256
+    var value = l
+    for (i in 0..7) {
+        val a = value.toInt()
+        result = Tables.hex[(value % 16).toInt()] + result
+        value /= 16
     }
     return "0x" + result
 }
-
-

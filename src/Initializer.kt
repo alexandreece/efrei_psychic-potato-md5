@@ -1,6 +1,6 @@
 class Initializer {
 
-    fun appendMessage(msg: ByteArray): ByteArray {
+    fun padMessage(msg: ByteArray): ByteArray {
         //Size appended to the message in bytes
         val appSize = 64 - ((msg.size + 9) % 64) + 9
         //Transform string into int array
